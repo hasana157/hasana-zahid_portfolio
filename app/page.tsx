@@ -2,25 +2,23 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import {
   ArrowRight,
   ArrowUpRight,
   BadgeCheck,
-  BrainCircuit,
   BriefcaseBusiness,
-  Code2,
   ExternalLink,
   GitBranch,
   Inbox,
   Mail,
-  Sparkles,
-  Zap,
 } from "lucide-react";
 
 type Project = {
   id: string;
   title: string;
   category: string;
+  period?: string;
   subtitle: string;
   problem: string[];
   solution: string[];
@@ -42,22 +40,69 @@ const profile = {
 const projects: Project[] = [
   {
     id: "smart-traffic-ai",
-    title: "Smart Traffic AI — Helmet Detection & License Plate Reader",
+    title: "Smart Traffic AI: Real-Time Helmet Detection System",
     category: "Computer Vision",
-    subtitle: "Dual YOLOv8 pipeline for real-time helmet detection and automated traffic compliance analysis.",
+    period: "Apr 2026 – Apr 2026",
+    subtitle: "Real-time traffic monitoring system for automated helmet compliance detection.",
     problem: [
-      "Manual monitoring was slow, inconsistent, and unable to scale across busy traffic environments.",
-      "Safety enforcement lacked a low-latency system for identifying helmet violations and vehicle identifiers.",
+      "Manual helmet-compliance monitoring is difficult to scale and can miss violations in busy traffic.",
+      "Traffic safety analysis needs fast, consistent detection and structured violation records.",
     ],
     solution: [
-      "Built a dual YOLOv8 detection pipeline for helmet recognition and license plate extraction in parallel.",
-      "Integrated OCR-based reading and optimized the system for CPU-friendly deployment with real-time inference.",
+      "Built a dual-model YOLOv8 pipeline to detect motorcycles and riders, then classify helmet and no-helmet cases.",
+      "Added region-based classification, live monitoring, timestamped JSON violation logs, and optimized video processing.",
     ],
-    stack: ["YOLOv8", "EasyOCR", "OpenCV", "Streamlit", "Python"],
+    stack: ["YOLOv8", "OpenCV", "Computer Vision", "Python", "JSON"],
     metrics: [
-      { label: "mAP50", value: "0.961" },
-      { label: "FPS", value: "30+" },
-      { label: "Deployment", value: "CPU" },
+      { label: "mAP50", value: "96.1%" },
+      { label: "Inference", value: "2.8 ms" },
+      { label: "Throughput", value: "~350 FPS" },
+    ],
+    link: profile.github,
+  },
+  {
+    id: "image-insight-vqa",
+    title: "Image Insight: Visual Question Answering (VQA) System",
+    category: "Multimodal AI",
+    period: "May 2026 – May 2026",
+    subtitle: "An interactive system that lets users upload an image and ask natural-language questions about it.",
+    problem: [
+      "Understanding image content often requires more than object labels; users need answers to flexible, natural-language questions.",
+      "Evaluation across question types and low-memory hardware requires a robust, measurable inference pipeline.",
+    ],
+    solution: [
+      "Built a Hugging Face transformer inference pipeline using BLIP-VQA, with ViLT as a graceful low-memory fallback.",
+      "Developed a Gradio interface with question categorization, prediction logging, answer normalization, synonym mapping, and evaluation dashboards.",
+      "Implemented batch evaluation on a curated 48-image test set sampled from VQA v2 and MS COCO 2014.",
+      "Recorded 100% accuracy for Action, Object, Yes/No, and Spatial question categories.",
+    ],
+    stack: ["BLIP-VQA", "ViLT", "Hugging Face", "Gradio", "Python"],
+    metrics: [
+      { label: "Accuracy", value: "93.8%" },
+      { label: "Avg. inference", value: "0.12 s" },
+      { label: "Categories", value: "100%" },
+    ],
+    link: profile.github,
+  },
+  {
+    id: "crop-yield-prediction",
+    title: "Crop Yield Prediction System",
+    category: "Machine Learning",
+    period: "Dec 2025 – Dec 2025",
+    subtitle: "A data-driven system for forecasting agricultural yields across regions and crop types using FAO data.",
+    problem: [
+      "Agricultural planning depends on accurate yield estimates across diverse crops and regions.",
+      "Raw agricultural data needs careful preparation and model comparison to support reliable forecasts.",
+    ],
+    solution: [
+      "Preprocessed FAO agricultural data and engineered features for crop- and region-level yield prediction.",
+      "Compared Linear Regression, Random Forest, and ANN models, then optimized Random Forest for the final predictions.",
+    ],
+    stack: ["Python", "FAO Data", "Scikit-learn", "Random Forest", "ANN"],
+    metrics: [
+      { label: "Best model", value: "Random Forest" },
+      { label: "R² score", value: "0.97" },
+      { label: "Use case", value: "Yield forecast" },
     ],
     link: profile.github,
   },
@@ -323,58 +368,20 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="relative"
+            className="relative mx-auto w-full max-w-[20rem] md:ml-auto md:mr-0"
           >
-            <div className="glass-card relative overflow-hidden rounded-[2rem] p-5 sm:p-7">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(0,217,255,0.22),transparent_30%),radial-gradient(circle_at_bottom_right,_rgba(124,58,237,0.22),transparent_30%)]" />
-
-              <div className="relative space-y-5">
-                <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-slate-400">
-                  <span>System</span>
-                  <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-2 py-1 text-cyan-200">Live</span>
-                </div>
-
-                <div className="flex items-center justify-between gap-6">
-                  <div>
-                    <p className="text-sm text-slate-400">Primary focus</p>
-                    <p className="mt-2 text-2xl font-semibold text-white">Agentic AI</p>
-                  </div>
-                  <div className="rounded-2xl border border-violet-400/30 bg-violet-500/10 p-3 text-violet-200">
-                    <BrainCircuit size={26} />
-                  </div>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                    <div className="mb-2 flex items-center gap-2 text-cyan-300">
-                      <Sparkles size={16} />
-                      <span className="text-xs uppercase tracking-[0.2em]">Research</span>
-                    </div>
-                    <p className="text-3xl font-bold">8+</p>
-                    <p className="text-sm text-slate-400">AI-driven projects</p>
-                  </div>
-                  <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                    <div className="mb-2 flex items-center gap-2 text-violet-300">
-                      <Zap size={16} />
-                      <span className="text-xs uppercase tracking-[0.2em]">Impact</span>
-                    </div>
-                    <p className="text-3xl font-bold">2300x</p>
-                    <p className="text-sm text-slate-400">speedup in optimization work</p>
-                  </div>
-                </div>
-
-                <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
-                  <div className="mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-slate-400">
-                    <Code2 size={14} />
-                    Core stack
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {['Python', 'PyTorch', 'FastAPI', 'LangGraph', 'RAG', 'Qdrant'].map((item) => (
-                      <span key={item} className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-2.5 py-1 text-xs font-medium text-cyan-200">
-                        {item}
-                      </span>
-                    ))}
-                  </div>
+            <div className="glass-card relative overflow-hidden rounded-[1.75rem] p-2">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.35rem]">
+                <Image
+                  src="/hasana-zahid.png"
+                  alt="Hasana Zahid"
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 80vw, 320px"
+                  className="object-cover object-[center_35%]"
+                />
+                <div className="absolute right-3 top-3 rounded-full border border-white/20 bg-slate-950/60 px-3 py-1.5 text-xs font-medium text-white backdrop-blur">
+                  {profile.location}
                 </div>
               </div>
             </div>
@@ -405,6 +412,7 @@ export default function Home() {
                   <div>
                     <p className="text-xs font-medium uppercase tracking-[0.25em] text-cyan-300">{project.category}</p>
                     <h3 className="mt-2 text-2xl font-semibold text-white">{project.title}</h3>
+                    {project.period && <p className="mt-2 text-xs text-slate-400">{project.period}</p>}
                   </div>
                   <button
                     type="button"
@@ -673,6 +681,7 @@ export default function Home() {
               <div className="pr-12">
                 <p className="text-xs font-medium uppercase tracking-[0.25em] text-cyan-300">{selectedProject.category}</p>
                 <h3 className="mt-2 text-3xl font-bold text-white">{selectedProject.title}</h3>
+                {selectedProject.period && <p className="mt-2 text-sm text-slate-400">{selectedProject.period}</p>}
               </div>
 
               <p className="mt-5 text-sm leading-6 text-slate-300">{selectedProject.subtitle}</p>
